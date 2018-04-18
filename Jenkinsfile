@@ -1,16 +1,10 @@
 env.CONTAINER_REGISTRY = "harbor.kandy.local"
-env.GITHUB_CREDENTIALS_ID = "github-token"
-env.DOCKER_CREDENTIALS_ID = "docker-credential"
 env.GIT_REPO = "https://github.com/alicankustemur/node-js-hello-world-docker.git"
 env.BRANCH = "master"
 env.APP = "$CONTAINER_REGISTRY/library/nodejs"
 env.WORK_DIR = "nodejs"
 
-/* 
-withCredentials([string(credentialsId: "$GITHUB_CREDENTIALS_ID",variable: 'GITHUB_TOKEN')]) {
-    env.GITHUB_TOKEN = "${GITHUB_TOKEN}"
-} 
-*/
+
 node {
      stage('Git Access && And Checkout Repository') {
         checkout([$class: 'GitSCM', 
@@ -21,24 +15,29 @@ node {
         submoduleCfg: [], userRemoteConfigs:[[url: "$GIT_REPO"]]])
     }
 
-   stage('Build image') {
-        dir("./$WORK_DIR") {
-            //sh 'docker build --build-arg github_token_arg=${GITHUB_TOKEN} -t $APP .'
+    dir("./$WORK_DIR") {
+        stage('Build image') {
             sh 'docker build -t $APP .'
-       }
-   }
-
-    stage('Push image') {
-        withCredentials([
-            usernamePassword(credentialsId: "$DOCKER_CREDENTIALS_ID",
-            usernameVariable: 'DOCKER_USER',
-            passwordVariable: 'DOCKER_PASSWORD')
-        ]){
-            sh 'docker login $CONTAINER_REGISTRY -u $DOCKER_USER -p $DOCKER_PASSWORD' 
         }
-        
-        sh 'docker tag $APP $APP:$BUILD_NUMBER'
-        sh 'docker push $APP:$BUILD_NUMBER'
+
+        stage('Push image') {
+            withCredentials([
+                usernamePassword(credentialsId: "$DOCKER_CREDENTIALS_ID",
+                usernameVariable: 'DOCKER_USER',
+                passwordVariable: 'DOCKER_PASSWORD')
+            ]){
+                sh 'docker login $CONTAINER_REGISTRY -u $DOCKER_USER -p $DOCKER_PASSWORD' 
+            }
+            
+            def COMMIT_ID = sh(script: "git log -1 --pretty=oneline | awk -F, '{printf \"%s\", substr(\$0,0,6)}'", returnStdout: true)
+            def COMMIT_AUTHOR = sh(script: "git log -1 --pretty=format:'%ae' | cut -d'@' -f 1", returnStdout: true)
+            
+            env.TAG = "$BRANCH"+"-"+ COMMIT_ID +"-"+ COMMIT_AUTHOR ;
+            
+            sh 'docker tag $APP $APP:$TAG'
+            sh 'docker push $APP:$TAG'
+            
+        }
         
     }
 }
