@@ -1,4 +1,5 @@
 env.CONTAINER_REGISTRY = "harbor.kandy.local"
+env.DOCKER_CREDENTIALS_ID = "docker-credential"
 env.GIT_REPO = "https://github.com/alicankustemur/node-js-hello-world-docker.git"
 env.BRANCH = "master"
 env.APP = "$CONTAINER_REGISTRY/library/nodejs"
