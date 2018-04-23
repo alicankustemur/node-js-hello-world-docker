@@ -5,7 +5,6 @@ env.BRANCH = "master"
 env.APP = "$CONTAINER_REGISTRY/library/nodejs"
 env.WORK_DIR = "nodejs"
 
-
 node {
      stage('Git Access && And Checkout Repository') {
         checkout([$class: 'GitSCM', 
