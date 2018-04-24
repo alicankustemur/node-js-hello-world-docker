@@ -1,9 +1,0 @@
-version: "3"
-services:
-  hello-world-app:
-      image: harbor.kandy.io/kandy/hello-world-app:2
-      container_name: hello-world-app
-      ports:
-       - "80:80"
-       - "443:443"
-        
