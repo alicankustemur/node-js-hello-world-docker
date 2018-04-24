@@ -38,6 +38,5 @@ node {
             sh 'docker push $APP:$TAG'
             
         }
-        
     }
 }
