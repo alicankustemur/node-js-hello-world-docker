@@ -47,7 +47,7 @@ node {
         dir("./$WORK_DIR") {
             // remove image from Jenkins disk.
             sh 'docker rmi -f $(docker images $APP:$TAG --format "{{.ID}}")'
-            sh 'docker rmi $(docker images -f dangling=true -q)'
+            sh 'docker rmi -f $(docker images -f dangling=true -q)'
         }
     }
 }
