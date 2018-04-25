@@ -54,7 +54,7 @@ node {
     stage('Git Tag') {
         dir("./$WORK_DIR") {
             sh "git tag 1.0.$BUILD_NUMBER"
-            sh "git push origin --tags"
+            sh "sudo git push origin --tags"
         }
     }
     
