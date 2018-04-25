@@ -19,7 +19,6 @@ node {
         stage('Build image') {
             sh 'docker build -t $APP .'
         }
-
         stage('Push image') {
             withCredentials([
                 usernamePassword(credentialsId: "$DOCKER_CREDENTIALS_ID",
