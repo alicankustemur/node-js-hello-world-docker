@@ -47,7 +47,15 @@ node {
         dir("./$WORK_DIR") {
             // remove image from Jenkins disk.
             sh 'docker rmi -f $(docker images $APP:$TAG --format "{{.ID}}")'
-            sh 'docker rmi -f $(docker images -f dangling=true -q)'
+            //sh 'docker rmi -f $(docker images -f dangling=true -q)'
         }
     }
+    
+    stage('Git Tag') {
+        dir("./$WORK_DIR") {
+            sh "git tag 1.0.$BUILD_NUMBER"
+            sh "git push origin master"
+        }
+    }
+    
 }
