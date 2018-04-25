@@ -38,7 +38,6 @@ pipeline {
                     ]){
                         sh 'docker login $CONTAINER_REGISTRY -u $DOCKER_USER -p $DOCKER_PASSWORD' 
                     }
-                    
                     script {
                         def COMMIT_ID = sh(script: "git log -1 --pretty=oneline | awk -F, '{printf \"%s\", substr(\$0,0,6)}'", returnStdout: true)
                         def COMMIT_AUTHOR = sh(script: "git log -1 --pretty=format:'%ae' | cut -d'@' -f 1 | sed -r 's/[.]/-/g'", returnStdout: true)
