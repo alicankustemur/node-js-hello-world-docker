@@ -1,14 +1,9 @@
 env.CONTAINER_REGISTRY = "harbor.k8s.kandy.io"
-env.GITHUB_CREDENTIALS_ID = "github-token"
 env.DOCKER_CREDENTIALS_ID = "docker-credential"
 env.GIT_REPO = "https://github.com/alicankustemur/node-js-hello-world-docker.git"
 env.BRANCH = "master"
 env.APP = "$CONTAINER_REGISTRY/kandy/nodejs"
 env.WORK_DIR = "nodejs"
-
-withCredentials([string(credentialsId: "$GITHUB_CREDENTIALS_ID",variable: 'GITHUB_TOKEN')]) {
-    env.GITHUB_TOKEN = "${GITHUB_TOKEN}"
-} 
 
 node {
     stage('Git Access && And Checkout Repository') {
