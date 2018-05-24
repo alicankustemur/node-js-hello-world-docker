@@ -19,7 +19,7 @@ node {
         relativeTargetDir: "$WORK_DIR"]],
         submoduleCfg: [], userRemoteConfigs:[[url: "$GIT_REPO"]]])
     }
-
+    /*
     stage('Build image') {
         dir("./$WORK_DIR") {
             sh 'docker build -t $APP .'
@@ -51,11 +51,13 @@ node {
         }
     }
     
+    
     stage('Git Tag') {
         dir("./$WORK_DIR") {
             sh "git tag 1.0.$BUILD_NUMBER"
             sh "sudo git push origin --tags"
         }
     }
+    */
     
 }
